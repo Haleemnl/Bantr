@@ -8,10 +8,26 @@ import { login, signup } from "./actions";
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleSubmit = async (formData) => {
+        const result = isLogin ? await login(formData) : await signup(formData);
+
+        if (result?.error) {
+            setError(result.error);
+        }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+
+                {error && (
+                    <div className="text-red-500 text-center mb-4">
+                        {error}
+                    </div>
+                )}
+
                 {/* Header */}
                 <div className="text-center">
                     <h1 className='font-serif text-3xl font-extrabold bg-gradient-to-r from-[#9ec0dc] to-[#5a338d] text-transparent bg-clip-text'>Bantr</h1>
@@ -31,7 +47,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* Form */}
-                <form className="mt-8 space-y-6">
+                <form action={handleSubmit} className="mt-8 space-y-6">
                     {!isLogin && (
                         <div className="relative">
                             <label htmlFor="name" className="sr-only">
@@ -104,16 +120,19 @@ const LoginPage = () => {
 
                     {isLogin ? (
                         <button
-                            formAction={login}
                             type="submit"
                             className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
-                        >sign in</button>
-                    ) : <button
-                        formAction={signup}
-                        type="submit"
-                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
-                    >Create Account</button>
-                    }
+                        >
+                            Sign in
+                        </button>
+                    ) : (
+                        <button
+                            type="submit"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                        >
+                            Create Account
+                        </button>
+                    )}
 
                 </form>
 

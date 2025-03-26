@@ -1,30 +1,24 @@
-
-
-
 'use server'
-
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-
 import { createClient } from '@/utils/supabase/server'
 
 export async function login(formData) {
     const supabase = await createClient()
-
-    // type-casting here for convenience
-    // in practice, you should validate your inputs
     const data = {
         email: formData.get('email'),
         password: formData.get('password'),
     }
 
-    const { error } = await supabase.auth.signInWithPassword(data)
-
-    console.log('error seen:', error.message);
-
+    const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
-        redirect('/error')
+        console.error('Login error:', error)
+        return { error: error.message }
+    }
+
+    if (!authData.user) {
+        return { error: 'Authentication failed' }
     }
 
     revalidatePath('/', 'layout')
@@ -33,9 +27,6 @@ export async function login(formData) {
 
 export async function signup(formData) {
     const supabase = await createClient()
-
-    // type-casting here for convenience
-    // in practice, you should validate your inputs
     const data = {
         email: formData.get('email'),
         password: formData.get('password'),
@@ -46,15 +37,14 @@ export async function signup(formData) {
         }
     }
 
-    const { error } = await supabase.auth.signUp(data)
+    const { data: signupData, error } = await supabase.auth.signUp(data)
 
     if (error) {
-        console.error('Error creating user:', error.message);
-
-        redirect('/error')
+        console.error('Signup error:', error)
+        return { error: error.message }
     }
 
-    if (data) {
+    if (signupData.user) {
         redirect('/confirm')
     }
 
