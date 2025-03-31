@@ -19,8 +19,6 @@ export default async function Home() {
 
     <div className='grid grid-cols-3 gap-5  '>
 
-
-
       <Middle
         user={user}
       />

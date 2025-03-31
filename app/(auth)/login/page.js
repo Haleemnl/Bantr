@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Mail, Lock, User, EyeOff, Eye } from 'lucide-react';
+import { Mail, Lock, User, EyeOff, Eye, Loader2 } from 'lucide-react';
 import { login, signup } from "./actions";
 
 
@@ -10,11 +10,25 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleSubmit = async (formData) => {
-        const result = isLogin ? await login(formData) : await signup(formData);
+    const [isLoading, setIsLoading] = useState(false);
 
-        if (result?.error) {
-            setError(result.error);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+        setIsLoading(true);
+        setError(null);
+
+        const formData = new FormData(e.target); // Get form data from event
+        try {
+            const result = isLogin ? await login(formData) : await signup(formData);
+            if (result?.error) {
+                setError(result.error);
+            }
+        } catch (err) {
+            setError("An unexpected error occurred. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -47,7 +61,7 @@ const LoginPage = () => {
                 </div>
 
                 {/* Form */}
-                <form action={handleSubmit} className="mt-8 space-y-6">
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                     {!isLogin && (
                         <div className="relative">
                             <label htmlFor="name" className="sr-only">
@@ -118,19 +132,33 @@ const LoginPage = () => {
                     )}
 
 
+                    {/* login action buttons */}
                     {isLogin ? (
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 disabled:bg-indigo-400"
+                            disabled={isLoading}
                         >
-                            Sign in
+                            {isLoading ? (
+                                <Loader2 className='animate-spin' />
+                            ) : (
+                                <p>Sign In</p>
+                            )
+                            }
+
                         </button>
                     ) : (
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 disabled:bg-indigo-400"
+                            disabled={isLoading}
                         >
-                            Create Account
+                            {isLoading ? (
+                                <Loader2 className='animate-spin' />
+                            ) : (
+                                <p>Create Account</p>
+                            )
+                            }
                         </button>
                     )}
 
@@ -156,6 +184,7 @@ const LoginPage = () => {
                         </button>
                     </div> */}
                 </div>
+
             </div>
         </div>
     );

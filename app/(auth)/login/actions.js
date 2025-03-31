@@ -30,6 +30,7 @@ export async function signup(formData) {
     const data = {
         email: formData.get('email'),
         password: formData.get('password'),
+        //other login details
         options: {
             data: {
                 full_name: formData.get('name')

@@ -43,6 +43,7 @@ const Chat = ({ user }) => {
 
             {/* Input form */}
             <form onSubmit={handleSubmit} className="flex gap-2">
+
                 <input
                     value={input}
                     onChange={handleInputChange}
