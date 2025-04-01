@@ -155,7 +155,7 @@ export default function AccountForm({ user }) {
                     {/* footer */}
                     <DialogFooter>
                         <button
-                            className="py-2 px-4 rounded-2xl bg-[#5cc1ff] text-white font-medium font-serif"
+                            className="py-2 px-4 rounded-2xl bg-purple-600 text-white font-medium font-serif"
                             onClick={updateProfile}
                             disabled={loading}
                         >

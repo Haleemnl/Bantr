@@ -148,7 +148,7 @@ const Middle = ({ user }) => {
                         <div className='w-full'>
 
                             <p className='text-sm font-bold font-serif'>@{profiles?.username || 'user'}</p>
-                            <p className='text-sm'>{tweet}</p>
+                            <p className='text-sm mb-3'>{tweet}</p>
                             {image_url &&
                                 <Image
                                     width={600}
@@ -159,7 +159,6 @@ const Middle = ({ user }) => {
                             }
 
                         </div>
-
 
 
                         {/* post options  (...) */}

@@ -89,51 +89,53 @@ export default function Profile({ user }) {
 
     return (
 
-        <div className="w-[95%] mx-auto bg-slate-100 dark:bg-black shadow-lg px-10 py-5 ">
+        <div className="w-[95%] mx-auto bg-slate-100 dark:bg-black shadow-lg py-5 ">
 
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-end mr-3">
                 {/* edit modal */}
                 <AccountForm user={user} />
             </div>
 
 
             {/* profile display */}
-            <div className="flex items-start justify-between mt-5 px-10 border p-5">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-around mt-5  border p-5">
 
                 {/* <UploadImage /> */}
                 <ProfileImageUpload />
 
-                <div className="w-1/2 p-2">
+                <div className="flex items-center justify-between">
+                    <div className="w-1/2 p-2">
 
-                    <div>
-                        <p className="font-bold text-sm font-serif">Email</p>
-                        <p className="">{user.email}</p>
+                        <div>
+                            <p className="font-bold text-sm font-serif">Email</p>
+                            <p className="">{user.email}</p>
+
+                        </div>
+
+                        <div className="my-3">
+                            <p className="font-semibold text-sm font-serif"> Full Name</p>
+                            {loading ? <SingleSkeleton /> : <p>{profile?.full_name || 'Your name'}</p>}
+                        </div>
+
+                        <div className="my-3">
+                            <p className="font-semibold text-sm font-serif">Website</p>
+                            {loading ? <SingleSkeleton /> : <p>{profile?.website}</p>}
+                        </div>
 
                     </div>
 
-                    <div className="my-3">
-                        <p className="font-semibold text-sm font-serif"> Full Name</p>
-                        {loading ? <SingleSkeleton /> : <p>{profile?.full_name || 'Your name'}</p>}
-                    </div>
-
-                    <div className="my-3">
-                        <p className="font-semibold text-sm font-serif">Website</p>
-                        {loading ? <SingleSkeleton /> : <p>{profile?.website}</p>}
-                    </div>
-
-                </div>
-
-                <div className=" w-1/2 p-2">
-                    <div>
-                        <p className="font-semibold text-sm font-serif">Username</p>
-                        {loading ? <SingleSkeleton /> : <p>{profile?.username || 'set a username'}</p>}
-                    </div>
+                    <div className=" w-1/2 p-2">
+                        <div>
+                            <p className="font-semibold text-sm font-serif">Username</p>
+                            {loading ? <SingleSkeleton /> : <p>{profile?.username || 'set a username'}</p>}
+                        </div>
 
 
 
-                    <div className="my-3">
-                        <p className="font-semibold text-sm font-serif">Bio</p>
-                        {loading ? <SingleSkeleton /> : <p>{profile?.bio || 'Your Bio'}</p>}
+                        <div className="my-3">
+                            <p className="font-semibold text-sm font-serif">Bio</p>
+                            {loading ? <SingleSkeleton /> : <p>{profile?.bio || 'Your Bio'}</p>}
+                        </div>
                     </div>
                 </div>
 

@@ -16,7 +16,7 @@ const FeedSearchBar = ({ query }) => {
                 name='query'
                 defaultValue={query}
                 className='border rounded-full w-[90%]  p-2 mb-5'
-                placeholder='Search Startups'
+                placeholder='Search Yaps!'
             />
 
             <div className='flex gap-2'>

@@ -1,7 +1,7 @@
 'use client'
 
 import { createClient } from '@/utils/supabase/client'
-import { Image, User } from 'lucide-react'
+import { Image, User, X } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
 
 const Tweetbox = ({ user }) => {
@@ -153,40 +153,59 @@ const Tweetbox = ({ user }) => {
 
                 <form className='w-[80%]' onSubmit={handleSubmit}>
 
-                    <input type="text" name="tweet" id="tweet"
+                    <textarea name="tweet" id="tweet"
                         value={tweet}
+                        maxLength={200}
                         onChange={(e) => setTweet(e.target.value)}
                         placeholder='What happening'
-                        className='outline-none p-2 w-full rounded-full border-gray-300 dark:bg-slate-200 dark:text-black text-wrap'
+                        style={{
+                            resize: 'none', // Prevent resizing
+                            overflow: 'hidden', // Handle scrolling if text exceeds the visible area
+                        }}
+                        className='outline-none p-2 w-full rounded-2xl border-gray-300 dark:bg-slate-200 dark:text-black text-wrap'
                     />
 
-                    <div className='flex items-center justify-between border-t pt-3 mt-3'>
-                        {/* preview */}
+                    <div className="flex items-center justify-between border-t pt-3 mt-3">
+                        {/* File input trigger */}
                         <div className="p-6">
-                            <label
-                                htmlFor="file-upload"
-                                className="cursor-pointer block text-center"
-                            >
-                                {filePreview ? (
-                                    <img src={filePreview} alt="Preview" className="max-h-48 mx-auto mb-4" />
-                                ) : (
-                                    <div className="text-gray-600">
-                                        <Image className='text-blue-400' />
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    onChange={handleFileSelect}
-                                    className="hidden"
-                                    id="file-upload"
-                                    accept="image/*"
-                                    disabled={uploading}
-                                />
+                            <label htmlFor="file-upload" className="cursor-pointer block text-center">
+                                <span> <Image className='text-blue-400' /></span>
                             </label>
+                            <input
+                                type="file"
+                                id="file-upload"
+                                className="hidden"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        setFile(file);
+                                        setFilePreview(URL.createObjectURL(file));
+                                    }
+                                }}
+                                accept="image/*"
+                            />
                         </div>
 
-
-
+                        {/* Image preview with close button */}
+                        {filePreview && (
+                            <div className="relative inline-block ml-4 mb-4">
+                                <img
+                                    src={filePreview}
+                                    alt="Preview"
+                                    className="max-h-48 mx-auto mb-4"
+                                />
+                                <button
+                                    onClick={() => {
+                                        setFile(null);
+                                        setFilePreview(null);
+                                    }}
+                                    aria-label="Remove image"
+                                    className="absolute top-2 right-2 text-white rounded-full p-1 bg-black"
+                                >
+                                    <X className='size-4' />
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     <div className='flex justify-end items-end -mt-5'>
