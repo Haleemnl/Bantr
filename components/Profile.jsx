@@ -91,20 +91,21 @@ export default function Profile({ user }) {
 
         <div className="w-[95%] mx-auto bg-slate-100 dark:bg-black shadow-lg py-5 ">
 
-            <div className="flex items-center justify-end mr-3">
+            <div className="flex items-center justify-end mr-3 ">
                 {/* edit modal */}
                 <AccountForm user={user} />
             </div>
 
 
+
             {/* profile display */}
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-around mt-5  border p-5">
+            <div className="flex flex-col md:flex-row gap-3 items-center md:items-start justify-center md:justify-around mt-5 p-5">
 
                 {/* <UploadImage /> */}
                 <ProfileImageUpload />
 
-                <div className="flex items-center justify-between">
-                    <div className="w-1/2 p-2">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between bg-slate-50 shadow-xl rounded-lg p-5 w-[90%] dark:bg-slate-900">
+                    <div className="w-full md:w-1/2 p-2 ">
 
                         <div>
                             <p className="font-bold text-sm font-serif">Email</p>
@@ -124,7 +125,7 @@ export default function Profile({ user }) {
 
                     </div>
 
-                    <div className=" w-1/2 p-2">
+                    <div className=" w-full md:w-1/2 p-2">
                         <div>
                             <p className="font-semibold text-sm font-serif">Username</p>
                             {loading ? <SingleSkeleton /> : <p>{profile?.username || 'set a username'}</p>}
@@ -142,7 +143,7 @@ export default function Profile({ user }) {
             </div>
 
 
-            <div className="mt-5 ">
+            <div className=" p-5">
 
 
 

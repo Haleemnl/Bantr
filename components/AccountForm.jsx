@@ -82,7 +82,7 @@ export default function AccountForm({ user }) {
 
 
     return (
-        <div className=" flex justify-between items-center">
+        <div className=" flex justify-between items-center bg-purple-200 rounded-lg dark:text-black">
 
             <Dialog>
                 <DialogTrigger className='flex items-center rounded-md gap-2 border py-1 px-2 '>

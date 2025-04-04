@@ -152,10 +152,10 @@ export default function ProfileImageUpload() {
 
 
     return (
-        <div className="p-8">
+        <div className="">
 
 
-            <div className="mb-8 flex items-end">
+            <div className="mb-3 flex items-end">
 
                 {/* Current profile image */}
                 {currentImage ?
@@ -218,8 +218,6 @@ export default function ProfileImageUpload() {
                 </div>
 
             </div>
-
-
 
 
             {/* Error display */}
