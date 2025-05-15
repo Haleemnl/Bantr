@@ -1,4 +1,4 @@
-import { Bot, Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Bot, Home, Settings, Wallet } from "lucide-react"
 
 import {
     Sidebar,
@@ -31,6 +31,11 @@ const items = [
         title: "Settings",
         url: "/profile_page",
         icon: Settings,
+    },
+    {
+        title: "Get Verified",
+        url: "/dashboard/billing",
+        icon: Wallet,
     },
 ]
 

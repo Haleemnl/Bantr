@@ -6,7 +6,7 @@ import { login, signup } from "./actions";
 
 
 const LoginPage = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
 

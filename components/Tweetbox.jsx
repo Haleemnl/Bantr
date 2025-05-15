@@ -77,7 +77,7 @@ const Tweetbox = ({ user }) => {
                 imageUrl = publicUrl;
             }
 
-            // Create post with image URL if one was uploaded
+            // Create post FOR tweet and image URL if one was uploaded
             const { data, error: postError } = await supabase
                 .from('posts')
                 .insert([
