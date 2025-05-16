@@ -68,7 +68,7 @@ export async function Subscriptions() {
                                 <div className="flex min-h-8 flex-wrap items-center gap-x-3 gap-y-1">
                                     <h2
                                         className={cn(
-                                            "text-lg text-surface-900",
+                                            "font-bold text-sm md:text-lg text-surface-900",
                                             !isValidSubscription(status) && "text-inherit",
                                         )}
                                     >
