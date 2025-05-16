@@ -2,6 +2,7 @@
 import { configureLemonSqueezy } from '@/config/lemonsqueezy'
 import { createClient } from '@/utils/supabase/server'
 import { listProducts, listPrices, getProduct, createCheckout, getSubscription, getPrice, cancelSubscription, updateSubscription } from '@lemonsqueezy/lemonsqueezy.js'
+import { revalidatePath } from 'next/cache'
 
 
 
@@ -525,8 +526,10 @@ export async function changePlan(currentPlanId, newPlanId) {
     configureLemonSqueezy();
 
 
-    const user = await currentUser()
+    const supabase = await createClient()
 
+
+    const { data: { user }, error } = await supabase.auth.getUser()
 
     if (!user) {
         throw new Error("User not authenticated");

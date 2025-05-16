@@ -5,6 +5,7 @@ import { AppSidebar } from "@/components/App-sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ModeToggle";
 import Link from "next/link";
+import { Toaster } from "sonner";
 
 
 export default function RootLayout({ children }) {
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
                         </div>
 
                         {children}
-
+                        <Toaster />
                     </ThemeProvider>
                 </main>
             </SidebarProvider>
