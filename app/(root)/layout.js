@@ -14,8 +14,7 @@ export default function RootLayout({ children }) {
         <div className="flex flex-col">
             <SidebarProvider>
                 <AppSidebar />
-                <main className="flex-1">
-
+                <main className="w-full">
 
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange >
 
