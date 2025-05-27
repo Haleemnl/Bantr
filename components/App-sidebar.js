@@ -45,7 +45,11 @@ export function AppSidebar() {
         <Sidebar collapsible="icon" >
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel className='font-serif  font-medium rounded-full mb-3'> Turn thoughts into quick posts</SidebarGroupLabel>
+
+                    <SidebarGroupLabel className='font-serif font-medium rounded-full mb-3 border-b-2'>
+                        Turn thoughts into quick posts
+                    </SidebarGroupLabel>
+
                     <SidebarGroupContent  >
                         <SidebarMenu>
                             {items.map((item) => (
@@ -63,6 +67,7 @@ export function AppSidebar() {
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
+
                 </SidebarGroup>
             </SidebarContent>
         </Sidebar>

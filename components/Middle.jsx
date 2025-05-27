@@ -142,59 +142,78 @@ const Middle = ({ user }) => {
 
             <div className='w-full h-3 bg-gray-300'></div>
 
-            {/* TWEETS */}
+            {/* 👉🏽 TWEETS */}
             {error && <p className='text-red-500'>{error}</p>}
 
             {loading ? <PostSkeleton /> :
                 posts.map(({ id, user_id, image_url, tweet, profiles }) => (
 
-                    <div key={id} className='border-b p-5 bg-slate-100 dark:bg-black w-[90%] mx-auto flex items-start justify-start gap-3 my-2 shadow-lg rounded-3xl'>
+                    <div key={id} className='px- w-full'>
 
-                        {/* profile photo */}
-                        {profiles.avatar_url ? (
-                            <img
-                                src={profiles?.avatar_url}
-                                alt="profile-photo"
-                                className='rounded-full w-10 h-10'
-                            />
-                        ) :
-                            <User className='bg-slate-400 text-slate-300 rounded-full w-10 h-10' />
-                        }
+                        <div className=' md:border-r-2 border-gray-300 dark:border-gray-800  p-5 w-[95%]'>
 
-                        <div className='w-full'>
-                            <div className='flex items-center gap-1'>
-                                <p className='text-sm font-bold font-serif'>
-                                    @{profiles?.username || 'user'}
-                                </p>
+                            <div className='flex items-center justify-between'>
 
-                                {/* Show verification badge if user has subscription */}
-                                <SubscriberBadge
-                                    userId={user_id}
-                                    subscriptions={subscriptions}
-                                />
+                                <div className='flex items-center space-x-2'>
+                                    <div>
+                                        {/* profile photo */}
+                                        {profiles.avatar_url ? (
+                                            <img
+                                                src={profiles?.avatar_url}
+                                                alt="profile-photo"
+                                                className='rounded-full w-10 h-10'
+                                            />
+                                        ) :
+                                            <User className='bg-slate-400 text-slate-300 rounded-full w-10 h-10' />
+                                        }
+                                    </div>
+
+                                    <div className='flex items-center gap-1'>
+                                        <p className='text-sm font-bold font-serif'>
+                                            @{profiles?.username || 'user'}
+                                        </p>
+
+                                        {/* Show verification badge if user has subscription */}
+                                        <SubscriberBadge
+                                            userId={user_id}
+                                            subscriptions={subscriptions}
+                                        />
+
+                                    </div>
+                                </div>
+
+
+                                {/* Show dropdown menu if post belongs to current user */}
+                                {user_id === user?.id && (
+                                    <DropDownMenu postId={id} />
+                                )}
+                            </div>
+
+
+                            {/* tweets and imgages */}
+                            <div className=' ml-12 '>
+
+                                <p className='text-sm mb-3'>{tweet}</p>
+                                {image_url &&
+                                    <Image
+                                        width={600}
+                                        height={600}
+                                        src={image_url}
+                                        alt="post-image"
+                                        className='object-cover w-full aspect-[2/1] rounded-3xl' />
+                                }
 
                             </div>
 
-                            <p className='text-sm mb-3'>{tweet}</p>
-                            {image_url &&
-                                <Image
-                                    width={600}
-                                    height={600}
-                                    src={image_url}
-                                    alt="post-image"
-                                    className='object-cover w-full h-[300px] rounded-lg' />
-                            }
+
+
                         </div>
 
-
-                        {/* Show dropdown menu if post belongs to current user */}
-                        {user_id === user?.id && (
-                            <DropDownMenu postId={id} />
-                        )}
-
-
+                        <hr className='w-full md:w-[95%] ' />
 
                     </div>
+
+
                 ))}
         </div>
     )
