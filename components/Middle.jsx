@@ -10,6 +10,7 @@ import { DropDownMenu } from './DropDownMenu'
 import { User } from 'lucide-react'
 import { PostSkeleton } from './loaders/PostSkeleton'
 import SubscriberBadge from './SubscriberBadge '
+import { LikeButton } from './LikeButton'
 
 const Middle = ({ user }) => {
 
@@ -23,13 +24,14 @@ const Middle = ({ user }) => {
     // get posts
     useEffect(() => {
         // Initial fetch of posts
+        // Replace your existing fetchPosts function with this:
         const fetchPosts = async () => {
             try {
                 setLoading(true)
 
                 let { data: posts, error } = await supabase
                     .from('posts')
-                    .select(`*, profiles( username,avatar_url )`)
+                    .select(`*, profiles( username,avatar_url ),likes(id,user_id)`)
                     .order('created_at', { ascending: false })
 
                 if (error) {
@@ -37,8 +39,15 @@ const Middle = ({ user }) => {
                 }
 
                 if (posts) {
-                    console.log(posts);
-                    setPosts(posts)
+                    // Transform posts to include like count and user's like status
+                    const postsWithLikes = posts.map(post => ({
+                        ...post,
+                        likeCount: post.likes?.length || 0,
+                        isLikedByUser: post.likes?.some(like => like.user_id === user?.id) || false
+                    }))
+
+                    console.log(postsWithLikes);
+                    setPosts(postsWithLikes)
                 }
             } catch (error) {
                 setError('Failed to fetch posts')
@@ -64,16 +73,22 @@ const Middle = ({ user }) => {
 
                     switch (payload.eventType) {
                         case 'INSERT':
-                            // Fetch the complete new post with profile information
+                            // Fetch the complete new post with profile and likes information
                             const { data: newPost, error } = await supabase
                                 .from('posts')
-                                .select(`*, profiles (username,avatar_url)`)
+                                .select(`*, profiles (username,avatar_url), likes(id,user_id)`)
                                 .eq('id', payload.new.id)
                                 .single()
 
                             if (!error && newPost) {
+                                // Transform the new post to include like data
+                                const postWithLikes = {
+                                    ...newPost,
+                                    likeCount: newPost.likes?.length || 0,
+                                    isLikedByUser: newPost.likes?.some(like => like.user_id === user?.id) || false
+                                }
                                 // Add new post to the beginning of the list
-                                setPosts(prevPosts => [newPost, ...prevPosts])
+                                setPosts(prevPosts => [postWithLikes, ...prevPosts])
                             }
                             break
                         case 'DELETE':
@@ -125,7 +140,7 @@ const Middle = ({ user }) => {
     }, [])
 
     return (
-        <div className='col-span-3 md:col-span-2 border-r border-l flex flex-col overflow-y-auto overscroll-none bg-slate-100 dark:bg-gray-900'>
+        <div className='col-span-3 md:col-span-2 border-r border-l flex flex-col overflow-y-auto overscroll-none bg-slate-100 dark:bg-black'>
 
             {/* home header */}
             <div className='flex items-center justify-between mt-3'>
@@ -146,14 +161,10 @@ const Middle = ({ user }) => {
             {error && <p className='text-red-500'>{error}</p>}
 
             {loading ? <PostSkeleton /> :
-                posts.map(({ id, user_id, image_url, tweet, profiles }) => (
-
+                posts.map(({ id, user_id, image_url, tweet, profiles, likeCount, isLikedByUser }) => (
                     <div key={id} className='px- w-full'>
-
                         <div className=' md:border-r-2 border-gray-300 dark:border-gray-800  p-5 w-[95%]'>
-
                             <div className='flex items-center justify-between'>
-
                                 <div className='flex items-center space-x-2'>
                                     <div>
                                         {/* profile photo */}
@@ -167,54 +178,48 @@ const Middle = ({ user }) => {
                                             <User className='bg-slate-400 text-slate-300 rounded-full w-10 h-10' />
                                         }
                                     </div>
-
                                     <div className='flex items-center gap-1'>
                                         <p className='text-sm font-bold font-serif'>
                                             @{profiles?.username || 'user'}
                                         </p>
-
-                                        {/* Show verification badge if user has subscription */}
                                         <SubscriberBadge
                                             userId={user_id}
                                             subscriptions={subscriptions}
                                         />
-
                                     </div>
                                 </div>
-
-
-                                {/* Show dropdown menu if post belongs to current user */}
                                 {user_id === user?.id && (
                                     <DropDownMenu postId={id} />
                                 )}
                             </div>
-
-
-                            {/* tweets and imgages */}
-                            <div className=' ml-12 '>
-
+                            <div className='ml-12'>
                                 <p className='text-sm mb-3'>{tweet}</p>
                                 {image_url &&
-                                    <Image
-                                        width={600}
-                                        height={600}
-                                        src={image_url}
-                                        alt="post-image"
-                                        className='object-cover w-full aspect-[2/1] rounded-3xl' />
+                                    <div className='max-w-md mx-auto '>
+                                        <Image
+                                            width={600}
+                                            height={600}
+                                            src={image_url}
+                                            alt="post-image"
+                                            className='w-full max-h-[400px] object-fill border rounded-xl'
+                                        />
+                                    </div>
                                 }
-
                             </div>
-
-
-
+                            {/* Like Button */}
+                            <div className='ml-12 mt-3'>
+                                <LikeButton
+                                    postId={id}
+                                    userId={user?.id}
+                                    initialLikeCount={likeCount}
+                                    initialIsLiked={isLikedByUser}
+                                />
+                            </div>
                         </div>
-
                         <hr className='w-full md:w-[95%] ' />
-
                     </div>
-
-
-                ))}
+                ))
+            }
         </div>
     )
 }

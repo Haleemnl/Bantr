@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
                         </div>
 
                         {children}
-                        <Toaster />
+                        <Toaster position="top-right" richColors />
                     </ThemeProvider>
                 </main>
             </SidebarProvider>
