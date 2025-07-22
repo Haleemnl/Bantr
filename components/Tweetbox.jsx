@@ -8,7 +8,7 @@ const Tweetbox = ({ user }) => {
     const supabase = createClient();
 
     // Form state
-    const [tweet, setTweet] = useState(null)
+    const [tweet, setTweet] = useState('')
     const [file, setFile] = useState(null); //INPUT FILE
     const [filePreview, setFilePreview] = useState(null); //FILE PREVIEW
     const [uploading, setUploading] = useState(false); //UPLOAD STATE

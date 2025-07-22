@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.13",
+    "@jsmastery/utils": "^1.0.2",
     "@lemonsqueezy/lemonsqueezy.js": "^4.0.0",
     "@lemonsqueezy/wedges": "^1.4.0",
     "@radix-ui/react-alert-dialog": "^1.1.6",

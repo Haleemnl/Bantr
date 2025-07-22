@@ -8,6 +8,40 @@ import { revalidatePath } from 'next/cache'
 
 
 
+export const getFeedTweets = async ({ limit = 5, page = 1, tweet }) => {
+    const supabase = await createClient()
+
+    let query = supabase.from('posts').select();
+
+    // for search filtering based on tweet    
+    if (tweet) {
+        query = query.ilike('tweet', `%${tweet}%`)
+
+    }
+
+    query = query.range((page - 1) * limit, page * limit - 1);
+    const { data: posts, error } = await query;
+
+    if (error) throw new Error(error.message);
+
+    return posts;
+}
+export const getFeedImage = async () => {
+    const supabase = await createClient()
+
+    let query = supabase.from('profiles').select();
+
+
+
+
+    const { data: posts, error } = await query;
+
+    if (error) throw new Error(error.message);
+
+    return posts;
+}
+
+
 
 export async function syncPlans() {
     configureLemonSqueezy()
